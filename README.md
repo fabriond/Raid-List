@@ -1,6 +1,8 @@
 # Raid List
 
-A new Flutter project.
+A Pokemon Go raid scheduler.
+
+**Work still in progress**
 
 ## Getting Started
 
