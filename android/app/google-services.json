@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "348445263659",
+    "firebase_url": "https://raid-list-d5824.firebaseio.com",
+    "project_id": "raid-list-d5824",
+    "storage_bucket": "raid-list-d5824.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:348445263659:android:59c3d68b8324a618",
+        "android_client_info": {
+          "package_name": "com.example.raidlist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "348445263659-55i2os7qi82222fmgbfkbd0rdkbhap0r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsJ9r-VBWU9BELajEyqwOKe8JiPAbgyZI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
