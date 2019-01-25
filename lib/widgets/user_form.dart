@@ -35,7 +35,7 @@ class UserForm extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          DefaultField('username', (value) => user.username = value),
+          DefaultField('username', false, (value) => user.username = value),
           SizedBox(height: 8.0),
           PasswordField((value) => user.password = value),
           SizedBox(height: 8.0),

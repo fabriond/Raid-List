@@ -18,7 +18,9 @@ class GroupEditScreen extends StatelessWidget {
         ),
         body: Padding(
           padding: EdgeInsets.only(left: 80.0, right:80.0),
-          child: GroupForm(user, group: this.group ?? Group())
+          child: Center(child: 
+            SingleChildScrollView(child: GroupForm(user, group: this.group ?? Group()))
+          )
         )
       )
     );

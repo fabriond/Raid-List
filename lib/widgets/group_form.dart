@@ -42,9 +42,9 @@ class GroupForm extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          DefaultField('location', (value) => group.location = value),
+          DefaultField('location', false, (value) => group.location = value),
           SizedBox(height: 8.0),
-          DefaultField('boss', (value) => group.boss = value),
+          DefaultField('boss', true, (value) => group.boss = value),
           SizedBox(height: 8.0),
           formButtons(context)
         ]
