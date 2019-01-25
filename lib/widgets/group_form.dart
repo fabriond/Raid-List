@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:raid_list/widgets/form/buttons.dart';
+import 'package:raid_list/models/group.dart';
+import 'package:raid_list/widgets/form/fields.dart';
+import 'package:raid_list/models/user.dart';
 
 class GroupForm extends StatelessWidget {
   // Create a global key that will uniquely identify the Form widget and allow
@@ -7,24 +11,26 @@ class GroupForm extends StatelessWidget {
   //
   // Note: This is a `GlobalKey<FormState>`, not a GlobalKey<GroupFormState>!
   final _formKey = GlobalKey<FormState>();
-  final Map<String, String> group;
+  final Group group;
+  final User user;
 
-  GroupForm({this.group});
+  GroupForm(this.user, {this.group});
 
   void _saveGroup(){
     final groupsRef = Firestore.instance.collection('groups');
-    if(!group.containsKey('id')){
+    if(group.id == null){
       final ref = groupsRef.document();
-      group.putIfAbsent('id', () => ref.documentID);
-      ref.setData(group);
+      group.id = ref.documentID;
+      group.addMember(user);
+      ref.setData(group.toMap());
     } else {
-      final ref = groupsRef.document(group['id']);
-      ref.setData(group, merge: true);
+      final ref = groupsRef.document(group.id);
+      ref.setData(group.toMap(), merge: true);
     }
   }
 
   void _deleteGroup(){
-    final ref = Firestore.instance.collection('groups').document(group['id']);
+    final ref = Firestore.instance.collection('groups').document(group.id);
     ref.delete();
   }
 
@@ -34,65 +40,37 @@ class GroupForm extends StatelessWidget {
     return Form(
       key: _formKey,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          textField('title', 'title'),
-          textField('bossName', 'boss name'),
+          DefaultField('location', (value) => group.location = value),
+          SizedBox(height: 8.0),
+          DefaultField('boss', (value) => group.boss = value),
+          SizedBox(height: 8.0),
           formButtons(context)
         ]
       )
     );
   }
 
-  Widget textField(String name, String formalName){
-    return TextFormField(
-      onSaved: (value) => group.update(name, (oldValue) => value, ifAbsent: () => value),
-      initialValue: this.group[name],
-      validator: (value){
-        if(value.isEmpty){
-          return 'Please enter a ' + formalName;
-        }
-      }
-    );
-  }
-
   Widget formButtons(BuildContext context){
-    if(group == null || group.isEmpty){
-      return submitButton(context);
+    if(group.id == null){
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          SubmitButton(_formKey, _saveGroup),
+          SizedBox(width: 16.0),
+          CancelButton()
+        ]
+      );
     } else{
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          submitButton(context),
-          deleteButton(context)
+          SubmitButton(_formKey, _saveGroup),
+          SizedBox(width: 16.0),
+          DeleteButton(_formKey, _deleteGroup)
         ]
       );
     }
-  }
-
-  Widget submitButton(BuildContext context){
-    return RaisedButton(
-      child: Text('Submit'),
-      onPressed: () {
-        if (_formKey.currentState.validate()) {
-          Scaffold.of(context).showSnackBar(SnackBar(content: Text('Creating Group...')));
-          _formKey.currentState.save();
-          _saveGroup();
-          Navigator.pop(context);
-        }
-      }
-    );
-  }
-
-  Widget deleteButton(BuildContext context){
-    return RaisedButton(
-      child: Text('Delete'),
-      onPressed: () {
-        if (_formKey.currentState.validate()) {
-          Scaffold.of(context).showSnackBar(SnackBar(content: Text('Deleting Group...')));
-          _deleteGroup();
-          Navigator.pop(context);
-        }
-      }
-    );
   }
 }

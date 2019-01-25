@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:raid_list/widgets/group_form.dart';
+import 'package:raid_list/models/user.dart';
+import 'package:raid_list/models/group.dart';
 
 class GroupEditScreen extends StatelessWidget {
-  final Map<String, String> group;
+  final Group group;
+  final User user;
 
-  GroupEditScreen({this.group});
+  GroupEditScreen(this.user, {this.group});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Raid Groups'),
-      ),
-      body: GroupForm(group: this.group ?? Map<String, String>())
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Raid Groups'),
+        ),
+        body: Padding(
+          padding: EdgeInsets.only(left: 80.0, right:80.0),
+          child: GroupForm(user, group: this.group ?? Group())
+        )
+      )
     );
   }
 }

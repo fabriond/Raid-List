@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/groups_screen.dart';
+import 'screens/login_screen.dart';
 
 void main() => runApp(App());
 
@@ -21,7 +21,8 @@ class App extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: GroupsScreen(),
+      home: LoginScreen(),
+      
     );
   }
 }

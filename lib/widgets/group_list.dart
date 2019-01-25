@@ -1,27 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:raid_list/screens/group_edit_screen.dart';
+import 'package:raid_list/models/user.dart';
+import 'package:raid_list/models/group.dart';
 
 class GroupList extends StatelessWidget {
+
+  final User user;
+
+  GroupList(this.user);
+
+  void saveGroup(Group group){
+    final groupsRef = Firestore.instance.collection('groups');
+    final ref = groupsRef.document(group.id);
+    ref.setData(group.toMap(), merge: true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance.collection('groups').snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError)
-          return new Text('Error: ${snapshot.error}');
+          return Text('Error: ${snapshot.error}');
         switch (snapshot.connectionState) {
-          case ConnectionState.waiting: return new Text('Loading...');
+          case ConnectionState.waiting: return Text('Loading...');
           default:
-            return new ListView(
+            return ListView(
               children: snapshot.data.documents.map((DocumentSnapshot document) {
-                return new ListTile(
-                  title: new Text(document['title']),
-                  subtitle: new Text(document['bossName']),
-                  onLongPress: () => Navigator.push(
-                    context, 
-                    MaterialPageRoute(builder: (context) => GroupEditScreen(group: document.data.cast<String, String>()))
-                  ),
+                return ListTile(
+                  title: Text(document['location']),
+                  subtitle: Text(document['boss']),
+                  onTap: () {
+                    final group = Group.fromMap(document.data);
+                    if(group.addMember(user)){
+                      saveGroup(group);
+                    } else{
+                      //mostrar detalhes do grupo
+                    }
+                  },
+                  onLongPress: () { 
+                    final group = Group.fromMap(document.data);
+                    Navigator.push(
+                      context, 
+                      MaterialPageRoute(builder: (context) => GroupEditScreen(user, group: group))
+                    );
+                  }
                 );
               }).toList(),
             );
