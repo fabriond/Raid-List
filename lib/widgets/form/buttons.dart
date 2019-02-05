@@ -15,16 +15,16 @@ class SubmitButton extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
-      shape: RoundedRectangleBorder(
+      /*shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
-      ),
+      ),*/
       padding: EdgeInsets.all(12),
       color: Colors.lightBlueAccent,
       child: Text('Submit', style: TextStyle(color: Colors.white)),
 
       onPressed: () {
         if (formKey.currentState.validate()) {
-          Scaffold.of(context).showSnackBar(SnackBar(content: Text('Saving...')));
+          //Scaffold.of(context).showSnackBar(SnackBar(content: Text('Saving...')));
           formKey.currentState.save();
           saveCallback();
           Navigator.pop(context);
@@ -44,16 +44,16 @@ class DeleteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context){
     return RaisedButton(
-      shape: RoundedRectangleBorder(
+      /*shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
-      ),
+      ),*/
       padding: EdgeInsets.all(12),
       color: Colors.redAccent,
       child: Text('Delete', style: TextStyle(color: Colors.white)),
 
       onPressed: () {
         if (formKey.currentState.validate()) {
-          Scaffold.of(context).showSnackBar(SnackBar(content: Text('Deleting...')));
+          //Scaffold.of(context).showSnackBar(SnackBar(content: Text('Deleting...')));
           deleteCallback();
           Navigator.pop(context);
         }
@@ -67,9 +67,9 @@ class CancelButton extends StatelessWidget {
   @override
   Widget build(BuildContext context){
     return RaisedButton(
-      shape: RoundedRectangleBorder(
+      /*shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
-      ),
+      ),*/
       padding: EdgeInsets.all(12),
       color: Colors.blueGrey,
       child: Text('Cancel', style: TextStyle(color: Colors.white)),

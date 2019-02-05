@@ -5,17 +5,26 @@ import 'package:raid_list/widgets/form/fields.dart';
 
 class LoginForm extends StatelessWidget {
 
-  final _formKey = GlobalKey<FormState>();
+  static final _formKey = GlobalKey<FormState>();
   final loginInfo = User();
+  final usernameFocus = FocusNode();
+  final passwordFocus = FocusNode();
 
-  Widget keepConnected(BuildContext context){
+  Widget rememberMe(BuildContext context){
     bool state = false;
-    return Switch(
-      value: state,
-      activeColor: Colors.blueAccent,
-      onChanged: (bool active){
-      
-      }
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text("Remember me"),
+        SizedBox(width: 20),
+        Switch(
+          value: state,
+          activeColor: Colors.blueAccent,
+          onChanged: (bool active){
+            //make do
+          }
+        )
+      ]
     );
   }
 
@@ -27,11 +36,11 @@ class LoginForm extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           //logo
-          DefaultField('username', false, (value) => loginInfo.username = value),
+          DefaultField('username', (value) => loginInfo.username = value, usernameFocus, nextFocus: passwordFocus),
           SizedBox(height: 8.0),
-          PasswordField((value) => loginInfo.password = value),
+          PasswordField((value) => loginInfo.password = value, passwordFocus),
           SizedBox(height: 8.0),
-          keepConnected(context),
+          rememberMe(context),
           SizedBox(height: 8.0),
           LoginButton(_formKey, loginInfo),
           CreateAccountButton()

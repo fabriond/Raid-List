@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:raid_list/widgets/group_list.dart';
-import 'package:raid_list/screens/group_edit_screen.dart';
+import 'package:raid_list/models/group.dart';
+import 'package:raid_list/widgets/group_form.dart';
 import 'package:raid_list/models/user.dart';
 
 class GroupsScreen extends StatelessWidget {
@@ -20,9 +21,11 @@ class GroupsScreen extends StatelessWidget {
           child: GroupList(user),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => Navigator.push(
-            context, 
-            MaterialPageRoute(builder: (context) => GroupEditScreen(user))
+          onPressed: () => showDialog(
+            context: context, 
+            builder: (context) {
+              return GroupForm(user, group: Group());
+            }
           ),
           tooltip: 'Create Group',
           child: Icon(Icons.add),

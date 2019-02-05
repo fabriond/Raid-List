@@ -10,9 +10,11 @@ class GroupForm extends StatelessWidget {
   // us to validate the form
   //
   // Note: This is a `GlobalKey<FormState>`, not a GlobalKey<GroupFormState>!
-  final _formKey = GlobalKey<FormState>();
+  static final _formKey = GlobalKey<FormState>();
   final Group group;
   final User user;
+  final locationFocus = FocusNode();
+  final bossFocus = FocusNode();
 
   GroupForm(this.user, {this.group});
 
@@ -39,38 +41,37 @@ class GroupForm extends StatelessWidget {
     // Build a Form widget using the _formKey we created above
     return Form(
       key: _formKey,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          DefaultField('location', false, (value) => group.location = value),
-          SizedBox(height: 8.0),
-          DefaultField('boss', true, (value) => group.boss = value),
-          SizedBox(height: 8.0),
-          formButtons(context)
-        ]
-      )
+      child: AlertDialog(
+        title: title(context),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              DefaultField('location', (value) => group.location = value, locationFocus, initValue: group.location, autoFocus: false, nextFocus: bossFocus),
+              SizedBox(height: 8.0),
+              DefaultField('boss', (value) => group.boss = value, bossFocus, initValue: group.boss),
+            ],
+          )
+        ),
+        actions: <Widget>[
+          forwardButton(context),
+          backwardButton(context)
+        ],
+      ),
     );
   }
 
-  Widget formButtons(BuildContext context){
-    if(group.id == null){
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          SubmitButton(_formKey, _saveGroup),
-          SizedBox(width: 16.0),
-          CancelButton()
-        ]
-      );
-    } else{
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          SubmitButton(_formKey, _saveGroup),
-          SizedBox(width: 16.0),
-          DeleteButton(_formKey, _deleteGroup)
-        ]
-      );
-    }
+  Widget title(BuildContext context){
+    if(group.id == null) return Text("Create Group");
+    else return Text("Edit Group");
+  }
+
+  Widget forwardButton(BuildContext context){
+    return SubmitButton(_formKey, _saveGroup);
+  }
+
+  Widget backwardButton(BuildContext context){
+    if(group.id == null) return CancelButton();
+    else return DeleteButton(_formKey, _deleteGroup);
   }
 }

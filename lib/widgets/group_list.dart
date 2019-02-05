@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:raid_list/screens/group_edit_screen.dart';
+import 'package:raid_list/widgets/group_form.dart';
 import 'package:raid_list/models/user.dart';
 import 'package:raid_list/models/group.dart';
 
@@ -41,9 +41,11 @@ class GroupList extends StatelessWidget {
                   },
                   onLongPress: () { 
                     final group = Group.fromMap(document.data);
-                    Navigator.push(
-                      context, 
-                      MaterialPageRoute(builder: (context) => GroupEditScreen(user, group: group))
+                    showDialog(
+                      context: context, 
+                      builder: (context) {
+                        return GroupForm(user, group: group);
+                      }
                     );
                   }
                 );

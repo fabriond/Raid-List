@@ -5,14 +5,16 @@ class DefaultField extends StatelessWidget {
   
   final Function onSaveCallback;
   final String fieldName;
-  final bool isLast;
+  final String initValue;
+  final FocusNode currentFocus;
+  final FocusNode nextFocus;
+  final bool autoFocus;
 
-
-  DefaultField(this.fieldName, this.isLast, this.onSaveCallback);
+  DefaultField(this.fieldName, this.onSaveCallback, this.currentFocus, {this.initValue = "", this.autoFocus = false, this.nextFocus});
 
   TextInputAction setInputAction(){
-    if(isLast){
-      return TextInputAction.none;
+    if(nextFocus == null){
+      return TextInputAction.done;
     }
     else{
       return TextInputAction.next;
@@ -25,11 +27,18 @@ class DefaultField extends StatelessWidget {
       textInputAction: setInputAction(),
       onSaved: (value) => onSaveCallback(value),
       keyboardType: TextInputType.text,
-      autofocus: false,
-      initialValue: '',
+      autofocus: autoFocus,
+      initialValue: initValue,
       validator: (value){
         if(value.isEmpty){
           return 'Please enter a ' + fieldName;
+        }
+      },
+      focusNode: currentFocus,
+      onFieldSubmitted: (String term){
+        if(nextFocus != null){
+          currentFocus.unfocus();
+          FocusScope.of(context).requestFocus(nextFocus);
         }
       },
       decoration: InputDecoration(
@@ -37,7 +46,7 @@ class DefaultField extends StatelessWidget {
         filled: true,
         hintText: ReCase(fieldName).titleCase,
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(3/*2.0*/)),
       ),
     );
   }
@@ -47,8 +56,10 @@ class DefaultField extends StatelessWidget {
 class PasswordField extends StatefulWidget {
 
   final Function onSaveCallback;
+  final FocusNode currentFocus;
+  final FocusNode nextFocus;
 
-  PasswordField(this.onSaveCallback);
+  PasswordField(this.onSaveCallback, this.currentFocus, {this.nextFocus});
 
   @override
   State<StatefulWidget> createState() => PasswordFieldState();
@@ -57,6 +68,13 @@ class PasswordField extends StatefulWidget {
 class PasswordFieldState extends State<PasswordField> {
 
   bool visibility = false;
+  Alignment iconPlacement = Alignment.centerRight;
+
+  void changeIconPlacement(){
+    setState(() {
+      iconPlacement = Alignment.topRight;
+    });
+  }
 
   void changeVisibility(){
     setState(() {
@@ -64,19 +82,36 @@ class PasswordFieldState extends State<PasswordField> {
     });
   }
 
+  TextInputAction setInputAction(){
+    if(widget.nextFocus == null){
+      return TextInputAction.done;
+    }
+    else{
+      return TextInputAction.next;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
-      alignment: AlignmentDirectional.centerEnd,
+      alignment: iconPlacement,
       children: <Widget>[
         TextFormField(
-          textInputAction: TextInputAction.none,
+          textInputAction: setInputAction(),
           onSaved: (value) => widget.onSaveCallback(value),
           autofocus: false,
           initialValue: '',
+          focusNode: widget.currentFocus,
           validator: (value){
             if(value.isEmpty){
+              changeIconPlacement();
               return 'Please enter a password';
+            }
+          },
+          onFieldSubmitted: (String term){
+            if(widget.nextFocus != null){
+              widget.currentFocus.unfocus();
+              FocusScope.of(context).requestFocus(widget.nextFocus);
             }
           },
           obscureText: !visibility,
@@ -85,7 +120,7 @@ class PasswordFieldState extends State<PasswordField> {
             filled: true,
             hintText: 'Password',
             contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(3/*2.0*/)),
           ),
         ),
         IconButton(
@@ -96,5 +131,4 @@ class PasswordFieldState extends State<PasswordField> {
     );
   }
 
-  
 }

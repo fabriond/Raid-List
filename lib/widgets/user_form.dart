@@ -10,8 +10,10 @@ class UserForm extends StatelessWidget {
   // us to validate the form
   //
   // Note: This is a `GlobalKey<FormState>`, not a GlobalKey<UserFormState>!
-  final _formKey = GlobalKey<FormState>();
+  static final _formKey = GlobalKey<FormState>();
   final User user = User();
+  final usernameFocus = FocusNode();
+  final passwordFocus = FocusNode();
 
   void _saveUser(){
     user.password = Password.hash(user.password, PBKDF2(iterationCount: 100));
@@ -35,9 +37,9 @@ class UserForm extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          DefaultField('username', false, (value) => user.username = value),
+          DefaultField('username', (value) => user.username = value, usernameFocus, nextFocus: passwordFocus),
           SizedBox(height: 8.0),
-          PasswordField((value) => user.password = value),
+          PasswordField((value) => user.password = value, passwordFocus),
           SizedBox(height: 8.0),
           formButtons(context)
         ]
@@ -46,11 +48,10 @@ class UserForm extends StatelessWidget {
   }
 
   Widget formButtons(BuildContext context){
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return ButtonBar(
+      alignment: MainAxisAlignment.center,
       children: <Widget>[
         SubmitButton(_formKey, _saveUser),
-        SizedBox(width: 16.0),
         CancelButton()
       ]
     );
