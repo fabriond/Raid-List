@@ -8,7 +8,7 @@ class UserEditScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.grey[400],
         appBar: AppBar(
-          title: Text('Raid Groups'),
+          title: Text('Create User'),
         ),
         body: Padding(
           padding: EdgeInsets.only(left: 80.0, right:80.0),
