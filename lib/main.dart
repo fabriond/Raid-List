@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/login_screen.dart';
+import 'package:raid_list/screens/splash_screen.dart';
 
 void main() => runApp(App());
 
@@ -8,7 +8,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Raid List',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -21,7 +21,7 @@ class App extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: LoginScreen(),
+      home: SplashScreen(),
       
     );
   }

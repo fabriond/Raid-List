@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:raid_list/screens/groups_screen.dart';
 import 'package:raid_list/screens/user_edit_screen.dart';
 import 'package:password/password.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SubmitButton extends StatelessWidget{
   
@@ -96,15 +97,17 @@ class CreateAccountButton extends StatelessWidget {
   }
 }
 
-class LoginButton extends StatelessWidget {
-  
+class LoginButton extends StatelessWidget{
   final GlobalKey<FormState> _formKey;
   final User loginInfo;
+  final bool remember;
+  final bool autologin;
 
-  LoginButton(this._formKey, this.loginInfo);
+  LoginButton(this._formKey, this.loginInfo, {this.remember = false, this.autologin = false});
 
   @override
   Widget build(BuildContext context) {
+    if(autologin) logIn(context);
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 16.0),
       child: RaisedButton(
@@ -139,6 +142,7 @@ class LoginButton extends StatelessWidget {
           Scaffold.of(context).showSnackBar(SnackBar(content: Text('Incorrect password')));
         } else{
           //login success
+          if(remember) setLoginInfo();
           Navigator.pushReplacement(
             context, 
             MaterialPageRoute(builder: (context) => GroupsScreen(user))
@@ -146,5 +150,11 @@ class LoginButton extends StatelessWidget {
         }
       }
     });
+  }
+  
+  void setLoginInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('username', loginInfo.username);
+    prefs.setString('password', loginInfo.password);
   }
 }
