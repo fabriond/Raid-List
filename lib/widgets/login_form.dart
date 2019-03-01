@@ -36,7 +36,6 @@ class LoginFormState extends State<LoginForm>{
           value: remember,
           activeColor: Colors.blueAccent,
           onChanged: (bool value){
-            if(!value) removeLoginInfo();
             setState(() => remember = value);
           }
         )
