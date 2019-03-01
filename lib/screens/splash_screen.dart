@@ -5,21 +5,38 @@ import 'package:raid_list/models/user.dart';
 
 class SplashScreen extends StatelessWidget{
   
-  Future<LoginScreen> autoLogin() async {
+  void autoLogin(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
     final loginInfo = User();
     loginInfo.username = prefs.getString('username');
     loginInfo.password = prefs.getString('password');
-    return LoginScreen(loginInfo);
+    if(loginInfo.username != null && loginInfo.password != null){
+      User.login(context, loginInfo);
+    } else {
+      Navigator.pushReplacement(
+        context, 
+        MaterialPageRoute(builder: (context) => LoginScreen())
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    autoLogin(context);
     return SafeArea(
-      child: FutureBuilder(
-        initialData: CircularProgressIndicator(),
-        future: autoLogin(),
-        builder: (context, snapshot) => snapshot.data,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Raid List App'),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              CircularProgressIndicator(),
+              Text('Loading...')
+            ],
+          )
+        )
       )
     );
   }

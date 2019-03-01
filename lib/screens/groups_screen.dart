@@ -3,6 +3,7 @@ import 'package:raid_list/widgets/group_list.dart';
 import 'package:raid_list/models/group.dart';
 import 'package:raid_list/widgets/group_form.dart';
 import 'package:raid_list/models/user.dart';
+import 'package:raid_list/widgets/form/buttons.dart';
 
 class GroupsScreen extends StatelessWidget {
 
@@ -16,6 +17,7 @@ class GroupsScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Raid Groups'),
+          actions: <Widget>[LogoutButton()],
         ),
         body: Center(
           child: GroupList(user),

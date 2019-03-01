@@ -101,13 +101,11 @@ class LoginButton extends StatelessWidget{
   final GlobalKey<FormState> _formKey;
   final User loginInfo;
   final bool remember;
-  final bool autologin;
 
-  LoginButton(this._formKey, this.loginInfo, {this.remember = false, this.autologin = false});
+  LoginButton(this._formKey, this.loginInfo, {this.remember = false});
 
   @override
   Widget build(BuildContext context) {
-    if(autologin) logIn(context);
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 16.0),
       child: RaisedButton(
@@ -118,43 +116,31 @@ class LoginButton extends StatelessWidget{
         color: Colors.lightBlueAccent,
         child: Text('Log In', style: TextStyle(color: Colors.white)),
 
-        onPressed: () {
+        onPressed: () async {
           if (_formKey.currentState.validate()) {
             Scaffold.of(context).showSnackBar(SnackBar(content: Text('Logging in...')));
             _formKey.currentState.save();
-            logIn(context);
+            bool result = await User.login(context, loginInfo);
+            if(remember && result) setLoginInfo();
           }
         }        
       ),
     );
-  }
-
-  void logIn(BuildContext context){
-    final ref = Firestore.instance.collection('users');
-    ref.document(loginInfo.username).get().then((document) {
-      if(!document.exists){
-        //if there's no user with such name in the database
-        Scaffold.of(context).showSnackBar(SnackBar(content: Text('Invalid username')));
-      } else {
-        final user = User.fromMap(document.data);
-        if(!Password.verify(loginInfo.password, user.password)){
-          //if the password is incorrect
-          Scaffold.of(context).showSnackBar(SnackBar(content: Text('Incorrect password')));
-        } else{
-          //login success
-          if(remember) setLoginInfo();
-          Navigator.pushReplacement(
-            context, 
-            MaterialPageRoute(builder: (context) => GroupsScreen(user))
-          );
-        }
-      }
-    });
   }
   
   void setLoginInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('username', loginInfo.username);
     prefs.setString('password', loginInfo.password);
+  }
+}
+
+class LogoutButton extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.exit_to_app),
+      onPressed: () => User.logout(context),
+    );
   }
 }
