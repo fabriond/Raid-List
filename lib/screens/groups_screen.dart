@@ -4,7 +4,6 @@ import 'package:raid_list/models/group.dart';
 import 'package:raid_list/widgets/group_form.dart';
 import 'package:raid_list/widgets/group_search.dart';
 import 'package:raid_list/models/user.dart';
-import 'package:raid_list/widgets/form/buttons.dart';
 
 class GroupsScreen extends StatelessWidget {
 

@@ -9,16 +9,16 @@ class UserController{
 
   static Future<void> create(User user) async {
     final doc = usersRef.document(user.username);
-    bool exists = (await doc.get()).exists;
-    if(!exists){
+    final usrDoc = await doc.get();
+    if(!usrDoc.exists){
       return doc.setData(user.toMap());
     }
   }
 
   static Future<void> update(User user) async {
     final doc = usersRef.document(user.username);
-    bool exists = (await doc.get()).exists;
-    if(exists){
+    final usrDoc = await doc.get();
+    if(usrDoc.exists){
       return doc.setData(user.toMap(), merge: true);
     }
   }

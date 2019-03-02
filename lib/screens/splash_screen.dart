@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:raid_list/screens/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:raid_list/models/user.dart';
+import 'package:raid_list/widgets/loading_icon.dart';
 
 class SplashScreen extends StatelessWidget{
   
@@ -28,15 +29,7 @@ class SplashScreen extends StatelessWidget{
         appBar: AppBar(
           title: Text('Raid List App'),
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              CircularProgressIndicator(),
-              Text('Loading...')
-            ],
-          )
-        )
+        body: LoadingIcon()
       )
     );
   }

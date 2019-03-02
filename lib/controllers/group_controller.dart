@@ -15,8 +15,8 @@ class GroupController{
 
   static Future<void> update(Group group) async {
     final doc = groupsRef.document(group.id);
-    bool exists = (await doc.get()).exists;
-    if(exists){
+    final grpDoc = await doc.get();
+    if(grpDoc.exists){
       return doc.setData(group.toMap(), merge: true);
     }
   }

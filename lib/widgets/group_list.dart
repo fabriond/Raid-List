@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:raid_list/widgets/group_form.dart';
 import 'package:raid_list/models/user.dart';
 import 'package:raid_list/models/group.dart';
+import 'package:raid_list/screens/group_screen.dart';
+import 'package:raid_list/widgets/loading_icon.dart';
 
 class GroupList extends StatelessWidget {
 
@@ -18,15 +20,15 @@ class GroupList extends StatelessWidget {
         if (snapshot.hasError)
           return Text('Error: ${snapshot.error}');
         switch (snapshot.connectionState) {
-          case ConnectionState.waiting: return Text('Loading...');
+          case ConnectionState.waiting: return LoadingIcon();
           default:
             return ListView(
               children: snapshot.data.documents.map((DocumentSnapshot document) {
                 final group = Group.fromMap(document.data);
                 if(user.groups.contains(group.id)){
                   return ListTile(
-                    title: Text(group.name),
-                    subtitle: Text(group.description),
+                    title: Text(group.name), //TODO: decide wether to center this text horizontally
+                    //subtitle: Center(child: Text(group.description)),
                     trailing: IconButton(
                       icon: Icon(Icons.edit),
                       onPressed: () {
@@ -39,7 +41,10 @@ class GroupList extends StatelessWidget {
                       },
                     ),
                     onTap: () {
-                      //mostrar detalhes do grupo
+                      Navigator.push(
+                        context, 
+                        MaterialPageRoute(builder: (context) => GroupScreen(user, group))
+                      );
                     },
                   );
                 }
