@@ -10,12 +10,6 @@ class GroupList extends StatelessWidget {
 
   GroupList(this.user);
 
-  void saveGroup(Group group){
-    final groupsRef = Firestore.instance.collection('groups');
-    final ref = groupsRef.document(group.id);
-    ref.setData(group.toMap(), merge: true);
-  }
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -28,28 +22,28 @@ class GroupList extends StatelessWidget {
           default:
             return ListView(
               children: snapshot.data.documents.map((DocumentSnapshot document) {
-                return ListTile(
-                  title: Text(document['location']),
-                  subtitle: Text(document['boss']),
-                  onTap: () {
-                    final group = Group.fromMap(document.data);
-                    if(group.addMember(user)){
-                      saveGroup(group);
-                    } else{
+                final group = Group.fromMap(document.data);
+                if(user.groups.contains(group.id)){
+                  return ListTile(
+                    title: Text(group.name),
+                    subtitle: Text(group.description),
+                    trailing: IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () {
+                        showDialog(
+                          context: context, 
+                          builder: (context) {
+                            return GroupForm(user, group: group);
+                          }
+                        );
+                      },
+                    ),
+                    onTap: () {
                       //mostrar detalhes do grupo
-                    }
-                  },
-                  onLongPress: () { 
-                    final group = Group.fromMap(document.data);
-                    showDialog(
-                      context: context, 
-                      builder: (context) {
-                        return GroupForm(user, group: group);
-                      }
-                    );
-                  }
-                );
-              }).toList(),
+                    },
+                  );
+                }
+              }).where((tile) => tile != null).toList(),
             );
         }
       },

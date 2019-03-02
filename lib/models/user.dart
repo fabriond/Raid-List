@@ -1,23 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:password/password.dart';
+import 'package:raid_list/models/group.dart';
 import 'package:raid_list/screens/login_screen.dart';
 import 'package:raid_list/screens/groups_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:raid_list/controllers/user_controller.dart';
 
 class User {
   String username;
   String password;
+  List<String> groups;
 
-  User({this.username, this.password});
+  User({this.username, this.password, this.groups}){
+    if(this.groups == null){
+      this.groups = [];
+    }
+  }
 
   factory User.fromMap(Map<String, dynamic> user){
-    return User(username: user['username'], password: user['password']);
+    return User(
+      username: user['username'], 
+      password: user['password'], 
+      groups: List.from(user['groups'], growable: true)
+    );
   }
 
   Map<String, dynamic> toMap(){
     final map = Map<String, dynamic>();
     map.putIfAbsent('username', () => username);
     map.putIfAbsent('password', () => password);
+    map.putIfAbsent('groups', () => groups);
     return map;
   }
 
@@ -51,5 +63,14 @@ class User {
       context, 
       MaterialPageRoute(builder: (context) => LoginScreen())
     );
+  }
+
+  bool addGroup(Group newGroup){
+    if(!groups.contains(newGroup.id)){
+      groups.add(newGroup.id);
+      UserController.update(this);
+      return true;
+    }
+    return false;
   }
 }

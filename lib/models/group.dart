@@ -1,12 +1,13 @@
 import 'package:raid_list/models/user.dart';
+import 'package:raid_list/controllers/group_controller.dart';
 
 class Group {
   String id;
-  String boss;
-  String location;
+  String name;
+  String description;
   List<String> members;
 
-  Group({this.id, this.boss, this.location, this.members}){
+  Group({this.id, this.name, this.description, this.members}){
     if(this.members == null){
       this.members = [];
     }
@@ -14,9 +15,9 @@ class Group {
 
   factory Group.fromMap(Map<String, dynamic> group){
     return Group(
-      id: group['id'], 
-      boss: group['boss'], 
-      location: group['location'], 
+      id: group['id'],
+      name: group['name'],
+      description: group['description'],
       members: List.from(group['members'], growable: true)
     );
   }
@@ -24,8 +25,8 @@ class Group {
   Map<String, dynamic> toMap(){
     final map = Map<String, dynamic>();
     map.putIfAbsent('id', () => this.id);
-    map.putIfAbsent('boss', () => boss);
-    map.putIfAbsent('location', () => location);
+    map.putIfAbsent('name', () => name);
+    map.putIfAbsent('description', () => description);
     map.putIfAbsent('members', () => members);
     return map;
   }
@@ -33,6 +34,7 @@ class Group {
   bool addMember(User newMember){
     if(!members.contains(newMember.username)){
       members.add(newMember.username);
+      GroupController.update(this);
       return true;
     }
     return false;

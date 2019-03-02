@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:raid_list/models/user.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:raid_list/screens/groups_screen.dart';
 import 'package:raid_list/screens/user_edit_screen.dart';
-import 'package:password/password.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SubmitButton extends StatelessWidget{
@@ -132,15 +129,5 @@ class LoginButton extends StatelessWidget{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('username', loginInfo.username);
     prefs.setString('password', loginInfo.password);
-  }
-}
-
-class LogoutButton extends StatelessWidget{
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(Icons.exit_to_app),
-      onPressed: () => User.logout(context),
-    );
   }
 }

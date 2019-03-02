@@ -4,6 +4,7 @@ import 'package:raid_list/widgets/form/buttons.dart';
 import 'package:raid_list/models/user.dart';
 import 'package:raid_list/widgets/form/fields.dart';
 import 'package:password/password.dart';
+import 'package:raid_list/controllers/user_controller.dart';
 
 class UserForm extends StatelessWidget {
   // Create a global key that will uniquely identify the Form widget and allow
@@ -17,12 +18,10 @@ class UserForm extends StatelessWidget {
 
   void _saveUser(){
     user.password = Password.hash(user.password, PBKDF2(iterationCount: 100));
-    final usersRef = Firestore.instance.collection('users');
-    final usr = usersRef.document(user.username).get();
+    final usr = UserController.usersRef.document(user.username).get();
     usr.then((doc) {
       if(!doc.exists){
-        final ref = usersRef.document(user.username);
-        ref.setData(user.toMap());
+        UserController.create(user);
       } else{
         Scaffold.of(_formKey.currentContext).showSnackBar(SnackBar(content: Text('Username taken')));
       }
