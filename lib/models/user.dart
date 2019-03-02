@@ -6,6 +6,7 @@ import 'package:raid_list/screens/groups_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:raid_list/controllers/user_controller.dart';
 
+//TODO: extend StatelessWidget and create a build function for this class which is the UI representation for the user
 class User {
   String username;
   String password;

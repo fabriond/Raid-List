@@ -1,6 +1,7 @@
 import 'package:raid_list/models/user.dart';
 import 'package:raid_list/controllers/group_controller.dart';
 
+//TODO: extend StatelessWidget and create a build function for this class which is the UI representation for the group
 class Group {
   String id;
   String name;
