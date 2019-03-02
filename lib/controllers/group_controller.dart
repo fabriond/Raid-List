@@ -1,4 +1,6 @@
+import 'package:raid_list/models/user.dart';
 import 'package:raid_list/models/group.dart';
+import 'package:raid_list/controllers/user_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class GroupController{
@@ -21,9 +23,18 @@ class GroupController{
 
   static Future<void> delete(Group group) async {
     final doc = groupsRef.document(group.id);
-    bool exists = (await doc.get()).exists;
-    if(exists){
+    final grpDoc = await doc.get();
+    if(grpDoc.exists){
+      final grp = Group.fromMap(grpDoc.data);
+      UserController.rmvGroupFromAll(grp.members, group);
       return doc.delete();
     }
+  }
+
+  static void rmvUserFromAll(List<String> groups, User member){
+    groups.forEach((g) async {
+      final doc = await groupsRef.document(g).get();
+      Group.fromMap(doc.data).removeMember(member);
+    });
   }
 }

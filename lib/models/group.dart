@@ -39,4 +39,13 @@ class Group {
     }
     return false;
   }
+
+  bool removeMember(User oldMember){
+    if(members.contains(oldMember.username)){
+      members.remove(oldMember.username);
+      GroupController.update(this);
+      return true;
+    }
+    return false;
+  }
 }

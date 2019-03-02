@@ -73,4 +73,13 @@ class User {
     }
     return false;
   }
+  
+  bool leaveGroup(Group oldGroup){
+    if(groups.contains(oldGroup.id)){
+      groups.remove(oldGroup.id);
+      UserController.update(this);
+      return true;
+    }
+    return false;
+  }
 }
