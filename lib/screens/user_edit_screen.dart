@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:raid_list/widgets/user_form.dart';
+import 'package:raid_list/widgets/user/user_form.dart';
 
 class UserEditScreen extends StatelessWidget {
   @override

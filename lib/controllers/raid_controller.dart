@@ -1,6 +1,5 @@
-import 'package:raid_list/models/user.dart';
 import 'package:raid_list/models/raid.dart';
-import 'package:raid_list/controllers/group_controller.dart';
+import 'package:raid_list/models/group.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RaidController{
@@ -39,6 +38,11 @@ class RaidController{
     if(raidDoc.exists){
       return doc.delete();
     }
+  }
+
+  static Future<void> deleteAllFromGroup(Group group) async {
+    final snapshot = await raidsRef(group.id).getDocuments();
+    snapshot.documents.forEach((doc) => doc.reference.delete());
   }
 
 }

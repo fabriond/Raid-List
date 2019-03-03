@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:raid_list/widgets/group_list.dart';
+import 'package:raid_list/widgets/group/group_list.dart';
 import 'package:raid_list/models/group.dart';
-import 'package:raid_list/widgets/group_form.dart';
-import 'package:raid_list/widgets/group_search.dart';
+import 'package:raid_list/widgets/group/group_form.dart';
+import 'package:raid_list/widgets/group/group_search.dart';
 import 'package:raid_list/models/user.dart';
 
 class GroupsScreen extends StatelessWidget {

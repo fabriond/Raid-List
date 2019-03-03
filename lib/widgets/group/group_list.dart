@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:raid_list/widgets/group_form.dart';
+import 'package:raid_list/widgets/group/group_form.dart';
 import 'package:raid_list/models/user.dart';
 import 'package:raid_list/models/group.dart';
 import 'package:raid_list/screens/group_screen.dart';

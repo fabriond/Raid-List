@@ -1,3 +1,4 @@
+import 'package:http/http.dart' show Client;
 import 'package:flutter/material.dart';
 import 'package:recase/recase.dart';
 
@@ -45,7 +46,7 @@ class DefaultField extends StatelessWidget {
         fillColor: Colors.white,
         filled: true,
         hintText: ReCase(fieldName).titleCase,
-        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        contentPadding: EdgeInsets.all(10.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(3/*2.0*/)),
       ),
     );
@@ -65,6 +66,7 @@ class PasswordField extends StatefulWidget {
   State<StatefulWidget> createState() => PasswordFieldState();
 
 }
+
 class PasswordFieldState extends State<PasswordField> {
 
   bool visibility = false;
@@ -119,7 +121,7 @@ class PasswordFieldState extends State<PasswordField> {
             fillColor: Colors.white,
             filled: true,
             hintText: 'Password',
-            contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+            contentPadding: EdgeInsets.all(10.0),
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(3/*2.0*/)),
           ),
         ),
@@ -131,4 +133,85 @@ class PasswordFieldState extends State<PasswordField> {
     );
   }
 
+}
+
+class RaidBossDropdown extends StatefulWidget{
+
+  final Client client = Client();
+  final Function onSaveCallback;
+  final String initValue;
+
+  RaidBossDropdown(this.onSaveCallback, {this.initValue});
+
+  @override
+  State<StatefulWidget> createState() => BossDropdownState(currentValue: initValue);
+
+}
+class BossDropdownState extends State<RaidBossDropdown> {
+
+  String currentValue;
+  bool selected = false;
+
+  BossDropdownState({this.currentValue});
+
+  Future<List<String>> getBosses() async {
+    final resp = await widget.client.get('https://thesilphroad.com/raid-bosses');
+    final bossDiv = RegExp('<div class="boss-name">\.*</div>');
+    return bossDiv.allMatches(resp.body)
+                  .map((m) => m.group(0).replaceFirst('<div class="boss-name">', '').replaceFirst('</div>', ''))
+                  .toList();
+  }
+
+  List<String> initData(){
+    if(currentValue != null && !selected) return [currentValue];
+    else return [];
+  }
+
+  List<String> availableBosses(List<String> currentBosses){
+    List<String> bosses = [];
+    if(!currentBosses.any((boss) => initData().contains(boss))){
+      bosses += initData(); // happens in case the raid's boss is no longer in the rotation
+    }
+    bosses += currentBosses;
+    return bosses;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<String>>(
+      initialData: initData(),
+      future: getBosses(),
+      builder: (context, snapshot) {
+        final bosses = availableBosses(snapshot.data).map((boss) {
+          return DropdownMenuItem(value: boss, child: Text(boss));
+        }).toList();
+
+        return DropdownButtonFormField<String>(
+          value: currentValue,
+          items: bosses,
+          hint: Text(ReCase('boss').titleCase),
+          onChanged: (value) {
+            setState(() {
+              if(!initData().contains(value)) selected = true;
+              currentValue = value;
+            });
+          },
+          onSaved: (value) => widget.onSaveCallback(value),
+          validator: (value){
+            if(value == null){
+              return 'Please select a boss';
+            } else if(value.isEmpty){
+              return 'Please select a boss';
+            }
+          },
+          decoration: InputDecoration(
+            fillColor: Colors.white,
+            filled: true,
+            contentPadding: EdgeInsets.all(10.0),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(3/*2.0*/)),
+          ),
+        );
+      }
+    );
+  }
 }

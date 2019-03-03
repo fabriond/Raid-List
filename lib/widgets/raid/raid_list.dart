@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:raid_list/widgets/raid_form.dart';
+import 'package:raid_list/widgets/raid/raid_form.dart';
 import 'package:raid_list/models/user.dart';
 import 'package:raid_list/models/group.dart';
 import 'package:raid_list/models/raid.dart';
