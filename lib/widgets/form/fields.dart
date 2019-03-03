@@ -46,7 +46,7 @@ class DefaultField extends StatelessWidget {
         fillColor: Colors.white,
         filled: true,
         hintText: ReCase(fieldName).titleCase,
-        contentPadding: EdgeInsets.all(10.0),
+        contentPadding: EdgeInsets.fromLTRB(10.0, 14.0, 10.0, 14.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(3/*2.0*/)),
       ),
     );
@@ -72,10 +72,9 @@ class PasswordFieldState extends State<PasswordField> {
   bool visibility = false;
   Alignment iconPlacement = Alignment.centerRight;
 
-  void changeIconPlacement(){
-    setState(() {
-      iconPlacement = Alignment.topRight;
-    });
+  Icon getIcon(){
+    if(visibility) return Icon(Icons.visibility_off);
+    else return Icon(Icons.visibility);
   }
 
   void changeVisibility(){
@@ -95,41 +94,35 @@ class PasswordFieldState extends State<PasswordField> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: iconPlacement,
-      children: <Widget>[
-        TextFormField(
-          textInputAction: setInputAction(),
-          onSaved: (value) => widget.onSaveCallback(value),
-          autofocus: false,
-          initialValue: '',
-          focusNode: widget.currentFocus,
-          validator: (value){
-            if(value.isEmpty){
-              changeIconPlacement();
-              return 'Please enter a password';
-            }
-          },
-          onFieldSubmitted: (String term){
-            if(widget.nextFocus != null){
-              widget.currentFocus.unfocus();
-              FocusScope.of(context).requestFocus(widget.nextFocus);
-            }
-          },
-          obscureText: !visibility,
-          decoration: InputDecoration(
-            fillColor: Colors.white,
-            filled: true,
-            hintText: 'Password',
-            contentPadding: EdgeInsets.all(10.0),
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(3/*2.0*/)),
-          ),
-        ),
-        IconButton(
-          icon: Icon(Icons.visibility),
+    return TextFormField(
+      textInputAction: setInputAction(),
+      onSaved: (value) => widget.onSaveCallback(value),
+      autofocus: false,
+      initialValue: '',
+      focusNode: widget.currentFocus,
+      validator: (value){
+        if(value.isEmpty){
+          return 'Please enter a password';
+        }
+      },
+      onFieldSubmitted: (String term){
+        if(widget.nextFocus != null){
+          widget.currentFocus.unfocus();
+          FocusScope.of(context).requestFocus(widget.nextFocus);
+        }
+      },
+      obscureText: !visibility,
+      decoration: InputDecoration(
+        fillColor: Colors.white,
+        filled: true,
+        hintText: 'Password',
+        contentPadding: EdgeInsets.fromLTRB(10.0, 14.0, 10.0, 14.0),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(3/*2.0*/)),
+        suffixIcon: IconButton(
+          icon: getIcon(),
           onPressed: changeVisibility,
         )
-      ]
+      ),
     );
   }
 
@@ -207,7 +200,7 @@ class BossDropdownState extends State<RaidBossDropdown> {
           decoration: InputDecoration(
             fillColor: Colors.white,
             filled: true,
-            contentPadding: EdgeInsets.all(10.0),
+            contentPadding: EdgeInsets.fromLTRB(10.0, 12.0, 10.0, 12.0),
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(3/*2.0*/)),
           ),
         );
