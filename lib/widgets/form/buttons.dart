@@ -60,6 +60,30 @@ class DeleteButton extends StatelessWidget {
   }
 }
 
+class ConfirmButton extends StatelessWidget {
+  
+  final Function saveCallback;
+
+  ConfirmButton(this.saveCallback);
+  
+  @override
+  Widget build(BuildContext context) {
+    return RaisedButton(
+      /*shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(24),
+      ),*/
+      padding: EdgeInsets.all(12),
+      color: Colors.lightBlueAccent,
+      child: Text('Confirm', style: TextStyle(color: Colors.white)),
+
+      onPressed: () {
+        saveCallback();
+        Navigator.pop(context);
+      }
+    );
+  }
+}
+
 class CancelButton extends StatelessWidget {
 
   @override

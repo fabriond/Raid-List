@@ -5,6 +5,8 @@ import 'package:raid_list/models/user.dart';
 import 'package:raid_list/models/group.dart';
 import 'package:raid_list/models/raid.dart';
 import 'package:raid_list/widgets/loading_icon.dart';
+import 'package:raid_list/widgets/dialogs/confirm_dialog.dart';
+
 
 class RaidList extends StatelessWidget {
 
@@ -40,11 +42,25 @@ class RaidList extends StatelessWidget {
                       );
                     },
                   ),
-                  onTap: () {/*
-                    Navigator.push(
+                  onTap: () {
+                    //TODO: maybe add a raid screen or just show members and info here
+                    /*Navigator.push(
                       context, 
                       MaterialPageRoute(builder: (context) => )//TODO: add raid_screen.dart and call RaidScreen here
                     );*/
+                  },
+                  onLongPress: (){
+                    if(!raid.members.contains(user.username)){
+                      showDialog(
+                        context: context,
+                        builder: (context) => ConfirmDialog('Join raid?', () => raid.addMember(user))
+                      );
+                    } else {
+                      showDialog(
+                        context: context,
+                        builder: (context) => ConfirmDialog('Leave raid?', () => raid.removeMember(user))
+                      );
+                    }
                   },
                 );
               }).toList(),
