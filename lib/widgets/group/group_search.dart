@@ -21,7 +21,7 @@ class GroupSearch extends StatelessWidget {
     final grp = GroupController.groupsRef.document(group.id).get();
     grp.then((doc) {
       if(!doc.exists){
-        Scaffold.of(_formKey.currentContext).showSnackBar(SnackBar(content: Text('Invalid group key')));
+        //TODO: add warning that group key is invalid (snackbar doesn't work inside a dialog)
       } else {
         final newGroup = Group.fromMap(doc.data);
         newGroup.addMember(user);

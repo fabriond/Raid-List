@@ -5,6 +5,7 @@ import 'package:raid_list/models/raid.dart';
 import 'package:raid_list/models/group.dart';
 import 'package:raid_list/widgets/raid/raid_form.dart';
 import 'package:raid_list/widgets/raid/raid_list.dart';
+import 'package:raid_list/widgets/dialogs/confirm_dialog.dart';
 
 class GroupScreen extends StatelessWidget{
   
@@ -28,7 +29,7 @@ class GroupScreen extends StatelessWidget{
                   children: <Widget>[
                     Center(child: Text(group.description)),
                     FlatButton.icon(
-                      label: Text('Key: '+group.id),
+                      label: Text('Copy Group Invite Key'),
                       icon: Icon(Icons.content_copy),
                       onPressed: () {
                         Clipboard.setData(ClipboardData(text: group.id));
@@ -63,6 +64,20 @@ class GroupScreen extends StatelessWidget{
                     builder: (context) {
                       return RaidForm(user, group, raid: Raid());
                     }
+                  );
+                },
+              ),
+              ListTile(
+                title: Text('Leave Group'),
+                onTap: (){
+                  Navigator.pop(context);
+                  showDialog(
+                    context: context,
+                    builder: (context) => ConfirmDialog('Leave Group?', () {
+                      group.removeMember(user);
+                      user.leaveGroup(group);
+                      Navigator.pop(context);
+                    })
                   );
                 },
               )

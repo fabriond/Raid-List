@@ -4,6 +4,7 @@ import 'package:raid_list/models/group.dart';
 import 'package:raid_list/widgets/group/group_form.dart';
 import 'package:raid_list/widgets/group/group_search.dart';
 import 'package:raid_list/models/user.dart';
+import 'package:raid_list/widgets/dialogs/confirm_dialog.dart';
 
 class GroupsScreen extends StatelessWidget {
 
@@ -57,9 +58,10 @@ class GroupsScreen extends StatelessWidget {
               ListTile(
                 title: Text('Logout'),
                 onTap: () {
-                  //maybe do a countdown onTap and logout onLongPress
-                  //to make sure the user intends to logout
-                  User.logout(context);
+                  showDialog(
+                    context: context,
+                    builder: (context) => ConfirmDialog('Logout?', () => User.logout(context))
+                  );
                 },
               )
             ],
