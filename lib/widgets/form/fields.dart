@@ -45,7 +45,7 @@ class DefaultField extends StatelessWidget {
       decoration: InputDecoration(
         fillColor: Colors.white,
         filled: true,
-        hintText: ReCase(fieldName).titleCase,
+        labelText: ReCase(fieldName).titleCase,
         contentPadding: EdgeInsets.fromLTRB(10.0, 14.0, 10.0, 14.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(3/*2.0*/)),
       ),
@@ -115,7 +115,7 @@ class PasswordFieldState extends State<PasswordField> {
       decoration: InputDecoration(
         fillColor: Colors.white,
         filled: true,
-        hintText: 'Password',
+        labelText: 'Password',
         contentPadding: EdgeInsets.fromLTRB(10.0, 14.0, 10.0, 14.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(3/*2.0*/)),
         suffixIcon: IconButton(

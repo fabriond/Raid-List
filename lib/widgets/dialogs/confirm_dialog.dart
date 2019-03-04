@@ -13,7 +13,7 @@ class ConfirmDialog extends StatelessWidget {
     return AlertDialog(
       title: Text(confirmText),
       actions: <Widget>[
-        ConfirmButton(onConfirm),
+        ConfirmButton('Confirm', onConfirm),
         CancelButton()
       ],
     );

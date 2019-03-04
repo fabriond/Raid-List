@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:raid_list/widgets/form/buttons.dart';
 import 'package:raid_list/models/user.dart';
 import 'package:raid_list/widgets/form/fields.dart';

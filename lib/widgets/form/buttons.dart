@@ -62,9 +62,10 @@ class DeleteButton extends StatelessWidget {
 
 class ConfirmButton extends StatelessWidget {
   
+  final String text;
   final Function saveCallback;
 
-  ConfirmButton(this.saveCallback);
+  ConfirmButton(this.text, this.saveCallback);
   
   @override
   Widget build(BuildContext context) {
@@ -74,7 +75,7 @@ class ConfirmButton extends StatelessWidget {
       ),*/
       padding: EdgeInsets.all(12),
       color: Colors.lightBlueAccent,
-      child: Text('Confirm', style: TextStyle(color: Colors.white)),
+      child: Text(text, style: TextStyle(color: Colors.white)),
 
       onPressed: () {
         saveCallback();

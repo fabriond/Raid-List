@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:raid_list/models/user.dart';
 import 'package:raid_list/models/raid.dart';
 import 'package:raid_list/models/group.dart';
@@ -22,8 +23,20 @@ class GroupScreen extends StatelessWidget{
           child: ListView(
             children: <Widget>[
               ListTile(
-                title: Center(child: Text(group.name)),
-                subtitle: Center(child: Text(group.description)),
+                title: Center(child: Text(group.name, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),)),
+                subtitle: Column(
+                  children: <Widget>[
+                    Center(child: Text(group.description)),
+                    FlatButton.icon(
+                      label: Text('Key: '+group.id),
+                      icon: Icon(Icons.content_copy),
+                      onPressed: () {
+                        Clipboard.setData(ClipboardData(text: group.id));
+                      },
+                      color: Colors.grey[100],
+                    ),
+                  ],
+                ),
               ),
               ListTile(
                 title: Text('View Members'),
