@@ -6,7 +6,8 @@ import 'package:raid_list/models/group.dart';
 import 'package:raid_list/models/raid.dart';
 import 'package:raid_list/widgets/loading_icon.dart';
 import 'package:raid_list/widgets/dialogs/confirm_dialog.dart';
-
+import 'package:raid_list/controllers/raid_controller.dart';
+import 'package:raid_list/widgets/user/member_list.dart';
 
 class RaidList extends StatelessWidget {
 
@@ -42,23 +43,33 @@ class RaidList extends StatelessWidget {
                       );
                     },
                   ),
-                  onTap: () {
+                  onTap: () async {
+                    showDialog(
+                      context: context, 
+                      builder: (context) {
+                        return Dialog(
+                          child: MemberList(user, raid: raid)
+                        );
+                      }
+                    );
                     //TODO: maybe add a raid screen or just show members and info here
                     /*Navigator.push(
                       context, 
                       MaterialPageRoute(builder: (context) => )//TODO: add raid_screen.dart and call RaidScreen here
                     );*/
                   },
-                  onLongPress: (){
-                    if(!raid.members.contains(user.username)){
+                  onLongPress: () async {
+                    final membersDocs = await RaidController.membersRef(raid).getDocuments();
+                    final members = membersDocs.documents.map((doc) => doc.documentID).toList();
+                    if(!members.contains(user.username)){
                       showDialog(
                         context: context,
-                        builder: (context) => ConfirmDialog('Join raid?', () => raid.addMember(user))
+                        builder: (context) => ConfirmDialog('Join raid?', () => RaidController.addMember(raid, user))
                       );
                     } else {
                       showDialog(
                         context: context,
-                        builder: (context) => ConfirmDialog('Leave raid?', () => raid.removeMember(user))
+                        builder: (context) => ConfirmDialog('Leave raid?', () => RaidController.removeMember(raid, user))
                       );
                     }
                   },

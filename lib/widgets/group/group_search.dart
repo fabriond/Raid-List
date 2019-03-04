@@ -24,7 +24,7 @@ class GroupSearch extends StatelessWidget {
         //TODO: add warning that group key is invalid (snackbar doesn't work inside a dialog)
       } else {
         final newGroup = Group.fromMap(doc.data);
-        newGroup.addMember(user);
+        GroupController.addMember(newGroup, user);
         user.addGroup(newGroup);
       }
     });

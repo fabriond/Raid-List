@@ -5,7 +5,9 @@ import 'package:raid_list/models/raid.dart';
 import 'package:raid_list/models/group.dart';
 import 'package:raid_list/widgets/raid/raid_form.dart';
 import 'package:raid_list/widgets/raid/raid_list.dart';
+import 'package:raid_list/controllers/group_controller.dart';
 import 'package:raid_list/widgets/dialogs/confirm_dialog.dart';
+import 'package:raid_list/widgets/user/member_list.dart';
 
 class GroupScreen extends StatelessWidget{
   
@@ -47,9 +49,7 @@ class GroupScreen extends StatelessWidget{
                     context: context, 
                     builder: (context) {
                       return Dialog(
-                        child: ListView(
-                          children: group.members.map((m) => ListTile(title: Text(m))).toList()
-                        )
+                        child: MemberList(user, group: group)
                       );
                     }
                   );
@@ -74,7 +74,7 @@ class GroupScreen extends StatelessWidget{
                   showDialog(
                     context: context,
                     builder: (context) => ConfirmDialog('Leave Group?', () {
-                      group.removeMember(user);
+                      GroupController.removeMember(group, user);
                       user.leaveGroup(group);
                       Navigator.pop(context);
                     })

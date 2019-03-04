@@ -1,6 +1,8 @@
 import 'package:raid_list/models/raid.dart';
+import 'package:raid_list/models/user.dart';
 import 'package:raid_list/models/group.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:raid_list/controllers/member_controller.dart';
 
 class RaidController{
 
@@ -18,6 +20,10 @@ class RaidController{
     return raidsRef(raid.groupId).document(raid.id);
   }
 
+  static CollectionReference membersRef(Raid raid){
+    return getDoc(raid).collection('members');
+  }
+
   static Future<void> create(Raid raid) async {
     final doc = getNewDoc(raid);
     raid.id = doc.documentID;
@@ -30,6 +36,14 @@ class RaidController{
     if(raidDoc.exists){
       return doc.setData(raid.toMap(), merge: true);
     }
+  }
+
+  static Future<void> addMember(Raid raid, User newMember) {
+    MemberController.create(membersRef(raid), newMember.username, member: {'isReady': false});
+  }
+
+  static Future<void> removeMember(Raid raid, User oldMember) {
+    MemberController.delete(membersRef(raid), oldMember.username);
   }
 
   static Future<void> delete(Raid raid) async {

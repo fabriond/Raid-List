@@ -1,24 +1,17 @@
-import 'package:raid_list/models/user.dart';
-import 'package:raid_list/controllers/group_controller.dart';
-
 class Group{
   String id;
   String name;
   String description;
-  List<String> members;
+  bool auxFlag; //Workaround to update user's GroupList when the user joins a new group
 
-  Group({this.id, this.name, this.description, this.members}){
-    if(this.members == null){
-      this.members = [];
-    }
-  }
+  Group({this.id, this.name, this.description, this.auxFlag});
 
   factory Group.fromMap(Map<String, dynamic> group){
     return Group(
       id: group['id'],
       name: group['name'],
       description: group['description'],
-      members: List.from(group['members'], growable: true)
+      auxFlag: group['auxFlag']
     );
   }
 
@@ -27,25 +20,7 @@ class Group{
     map.putIfAbsent('id', () => id);
     map.putIfAbsent('name', () => name);
     map.putIfAbsent('description', () => description);
-    map.putIfAbsent('members', () => members);
+    map.putIfAbsent('auxFlag', () => auxFlag);
     return map;
-  }
-
-  bool addMember(User newMember){
-    if(!members.contains(newMember.username)){
-      members.add(newMember.username);
-      GroupController.update(this);
-      return true;
-    }
-    return false;
-  }
-
-  bool removeMember(User oldMember){
-    if(members.contains(oldMember.username)){
-      members.remove(oldMember.username);
-      GroupController.update(this);
-      return true;
-    }
-    return false;
   }
 }

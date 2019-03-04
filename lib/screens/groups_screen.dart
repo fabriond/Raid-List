@@ -40,6 +40,7 @@ class GroupsScreen extends StatelessWidget {
                     builder: (context) {
                       return GroupSearch(user);
                     }
+                    
                   );
                 },
               ),

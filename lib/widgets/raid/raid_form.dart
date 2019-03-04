@@ -24,7 +24,7 @@ class RaidForm extends StatelessWidget {
   void _saveRaid(){
     if(raid.id == null){
       RaidController.create(raid);
-      raid.addMember(user);
+      RaidController.addMember(raid, user);
     } else {
       RaidController.update(raid);
     }

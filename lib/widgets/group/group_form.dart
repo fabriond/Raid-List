@@ -21,7 +21,7 @@ class GroupForm extends StatelessWidget {
   void _saveGroup(){
     if(group.id == null){
       GroupController.create(group);
-      group.addMember(user);
+      GroupController.addMember(group, user);
       user.addGroup(group);
     } else {
       GroupController.update(group);
