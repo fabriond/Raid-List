@@ -30,13 +30,14 @@ class GroupScreen extends StatelessWidget{
                 subtitle: Column(
                   children: <Widget>[
                     Center(child: Text(group.description)),
+                    SizedBox(height: 5),
                     FlatButton.icon(
                       label: Text('Copy Group Invite Key'),
                       icon: Icon(Icons.content_copy),
                       onPressed: () {
                         Clipboard.setData(ClipboardData(text: group.id));
                       },
-                      color: Colors.grey[100],
+                      color: Theme.of(context).highlightColor
                     ),
                   ],
                 ),

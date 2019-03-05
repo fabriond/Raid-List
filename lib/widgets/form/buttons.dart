@@ -13,16 +13,12 @@ class SubmitButton extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
-      /*shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(24),
-      ),*/
       padding: EdgeInsets.all(12),
-      color: Colors.lightBlueAccent,
+      color: Theme.of(context).buttonTheme.colorScheme.primary,
       child: Text('Submit', style: TextStyle(color: Colors.white)),
 
       onPressed: () {
         if (formKey.currentState.validate()) {
-          //Scaffold.of(context).showSnackBar(SnackBar(content: Text('Saving...')));
           formKey.currentState.save();
           saveCallback();
           Navigator.pop(context);
@@ -42,11 +38,8 @@ class DeleteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context){
     return RaisedButton(
-      /*shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(24),
-      ),*/
       padding: EdgeInsets.all(12),
-      color: Colors.redAccent,
+      color: Theme.of(context).buttonTheme.colorScheme.error,
       child: Text('Delete', style: TextStyle(color: Colors.white)),
 
       onPressed: () {
@@ -70,11 +63,8 @@ class ConfirmButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
-      /*shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(24),
-      ),*/
       padding: EdgeInsets.all(12),
-      color: Colors.lightBlueAccent,
+      color: Theme.of(context).buttonTheme.colorScheme.primary,
       child: Text(text, style: TextStyle(color: Colors.white)),
 
       onPressed: () {
@@ -90,11 +80,8 @@ class CancelButton extends StatelessWidget {
   @override
   Widget build(BuildContext context){
     return RaisedButton(
-      /*shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(24),
-      ),*/
       padding: EdgeInsets.all(12),
-      color: Colors.blueGrey,
+      color: Theme.of(context).buttonTheme.colorScheme.background,
       child: Text('Cancel', style: TextStyle(color: Colors.white)),
       onPressed: () {
         Navigator.pop(context);
@@ -109,7 +96,7 @@ class CreateAccountButton extends StatelessWidget {
     return FlatButton(
       child: Text(
         'Create Account',
-        style: TextStyle(color: Colors.black54),
+        style: TextStyle(color: Theme.of(context).hintColor),
       ),
       onPressed: () => Navigator.push(
         context, 
@@ -135,7 +122,7 @@ class LoginButton extends StatelessWidget{
           borderRadius: BorderRadius.circular(24),
         ),
         padding: EdgeInsets.all(12),
-        color: Colors.lightBlueAccent,
+        color: Theme.of(context).buttonTheme.colorScheme.primary,
         child: Text('Log In', style: TextStyle(color: Colors.white)),
 
         onPressed: () async {

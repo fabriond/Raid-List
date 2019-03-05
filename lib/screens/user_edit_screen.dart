@@ -6,7 +6,6 @@ class UserEditScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.grey[400],
         appBar: AppBar(
           title: Text('Create User'),
         ),

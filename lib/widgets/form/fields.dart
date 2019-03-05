@@ -43,7 +43,7 @@ class DefaultField extends StatelessWidget {
         }
       },
       decoration: InputDecoration(
-        fillColor: Colors.white,
+        fillColor: Theme.of(context).dialogBackgroundColor,
         filled: true,
         labelText: ReCase(fieldName).titleCase,
         contentPadding: EdgeInsets.fromLTRB(10.0, 14.0, 10.0, 14.0),
@@ -113,7 +113,7 @@ class PasswordFieldState extends State<PasswordField> {
       },
       obscureText: !visibility,
       decoration: InputDecoration(
-        fillColor: Colors.white,
+        fillColor: Theme.of(context).dialogBackgroundColor,
         filled: true,
         labelText: 'Password',
         contentPadding: EdgeInsets.fromLTRB(10.0, 14.0, 10.0, 14.0),
@@ -198,7 +198,7 @@ class BossDropdownState extends State<RaidBossDropdown> {
             }
           },
           decoration: InputDecoration(
-            fillColor: Colors.white,
+            fillColor: Theme.of(context).dialogBackgroundColor,
             filled: true,
             contentPadding: EdgeInsets.fromLTRB(10.0, 12.0, 10.0, 12.0),
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(3/*2.0*/)),

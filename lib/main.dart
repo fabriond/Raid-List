@@ -20,9 +20,21 @@ class App extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         primarySwatch: Colors.blue,
+        primaryColor: Colors.blue,                //Used because dark theme has black as default primaryColor
+        accentColor: Colors.lightBlueAccent[400], //Used because dark theme has green as default accentColor
+        textSelectionHandleColor: Colors.blueAccent,
+        
+        buttonTheme: ButtonThemeData(
+          colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: Colors.lightBlue,  //Positive button (any)
+            backgroundColor: Colors.blueGrey, //Cancel button
+            errorColor: Colors.redAccent      //Delete button
+          )
+        ),
+        
+        brightness: Brightness.dark,
       ),
-      home: SplashScreen(),
-      
+      home: SplashScreen(),     
     );
   }
 }

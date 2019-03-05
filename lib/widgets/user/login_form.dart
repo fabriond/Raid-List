@@ -25,20 +25,22 @@ class LoginFormState extends State<LoginForm>{
     prefs.remove('password');
   }
   
-  Widget rememberMe(){
+  Widget rememberMe(BuildContext context){
     if(!remember) removeLoginInfo();
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
+        Spacer(flex: 2),
         Text("Remember me"),
-        SizedBox(width: 20),
+        Spacer(),
         Switch(
           value: remember,
-          activeColor: Colors.blueAccent,
+          activeColor: Theme.of(context).buttonTheme.colorScheme.primary,
           onChanged: (bool value){
             setState(() => remember = value);
           }
-        )
+        ),
+        Spacer(flex: 2),
       ]
     );
   }
@@ -50,13 +52,14 @@ class LoginFormState extends State<LoginForm>{
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          //logo
+          Image.asset('assets/logo.png', height: 155, width: 143.7),
+          Text('Logo by Freepik'),
+          SizedBox(height: 16.0),
           DefaultField('username', (value) => widget.loginInfo.username = value, widget.usernameFocus, nextFocus: widget.passwordFocus),
           SizedBox(height: 8.0),
           PasswordField((value) => widget.loginInfo.password = value, widget.passwordFocus),
           SizedBox(height: 8.0),
-          rememberMe(),
-          SizedBox(height: 8.0),
+          rememberMe(context),
           LoginButton(LoginForm._formKey, widget.loginInfo, remember: remember),
           CreateAccountButton()
         ],
