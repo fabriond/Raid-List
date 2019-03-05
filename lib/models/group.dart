@@ -2,16 +2,16 @@ class Group{
   String id;
   String name;
   String description;
-  bool auxFlag; //Workaround to update user's GroupList when the user joins a new group
+  int memberCount;
 
-  Group({this.id, this.name, this.description, this.auxFlag});
+  Group({this.id, this.name, this.description, this.memberCount});
 
   factory Group.fromMap(Map<String, dynamic> group){
     return Group(
       id: group['id'],
       name: group['name'],
       description: group['description'],
-      auxFlag: group['auxFlag']
+      memberCount: group['memberCount']
     );
   }
 
@@ -20,7 +20,7 @@ class Group{
     map.putIfAbsent('id', () => id);
     map.putIfAbsent('name', () => name);
     map.putIfAbsent('description', () => description);
-    map.putIfAbsent('auxFlag', () => auxFlag);
+    map.putIfAbsent('memberCount', () => memberCount);
     return map;
   }
 }

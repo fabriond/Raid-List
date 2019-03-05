@@ -27,6 +27,7 @@ class RaidController{
   static Future<void> create(Raid raid) async {
     final doc = getNewDoc(raid);
     raid.id = doc.documentID;
+    raid.memberCount = 0;
     return doc.setData(raid.toMap());
   }
 
@@ -38,12 +39,16 @@ class RaidController{
     }
   }
 
-  static Future<void> addMember(Raid raid, User newMember) {
+  static void addMember(Raid raid, User newMember) {
     MemberController.create(membersRef(raid), newMember.username, member: {'isReady': false});
+    raid.memberCount += 1;
+    update(raid);
   }
 
-  static Future<void> removeMember(Raid raid, User oldMember) {
+  static void removeMember(Raid raid, User oldMember) {
     MemberController.delete(membersRef(raid), oldMember.username);
+    raid.memberCount -= 1;
+    update(raid);
   }
 
   static Future<void> delete(Raid raid) async {
@@ -53,10 +58,4 @@ class RaidController{
       return doc.delete();
     }
   }
-
-  static Future<void> deleteAllFromGroup(Group group) async {
-    final snapshot = await raidsRef(group.id).getDocuments();
-    snapshot.documents.forEach((doc) => doc.reference.delete());
-  }
-
 }

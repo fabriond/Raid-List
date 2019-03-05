@@ -16,6 +16,11 @@ class RaidList extends StatelessWidget {
 
   RaidList(this.user, this.group);
 
+  String formatMemberCount(Raid raid){
+    if(raid.memberCount == 1) return '(${raid.memberCount} member)';
+    else return '(${raid.memberCount} members)';
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -30,7 +35,7 @@ class RaidList extends StatelessWidget {
               children: snapshot.data.documents.map((DocumentSnapshot document) {
                 final raid = Raid.fromMap(document.data);
                 return ListTile(
-                  title: Center(child: Text(raid.location)),
+                  title: Center(child: Text(raid.location+' '+formatMemberCount(raid))),
                   subtitle: Center(child: Text(raid.boss)),
                   trailing: IconButton(
                     icon: Icon(Icons.edit),
@@ -44,21 +49,6 @@ class RaidList extends StatelessWidget {
                     },
                   ),
                   onTap: () async {
-                    showDialog(
-                      context: context, 
-                      builder: (context) {
-                        return Dialog(
-                          child: MemberList(user, raid: raid)
-                        );
-                      }
-                    );
-                    //TODO: maybe add a raid screen or just show members and info here
-                    /*Navigator.push(
-                      context, 
-                      MaterialPageRoute(builder: (context) => )//TODO: add raid_screen.dart and call RaidScreen here
-                    );*/
-                  },
-                  onLongPress: () async {
                     final membersDocs = await RaidController.membersRef(raid).getDocuments();
                     final members = membersDocs.documents.map((doc) => doc.documentID).toList();
                     if(!members.contains(user.username)){
@@ -72,6 +62,21 @@ class RaidList extends StatelessWidget {
                         builder: (context) => ConfirmDialog('Leave raid?', () => RaidController.removeMember(raid, user))
                       );
                     }
+                  },
+                  onLongPress: () async {
+                    showDialog(
+                      context: context, 
+                      builder: (context) {
+                        return Dialog(
+                          child: MemberList(user, raid: raid)
+                        );
+                      }
+                    );
+                    //TODO: maybe add a raid screen or just show members and info here
+                    /*Navigator.push(
+                      context, 
+                      MaterialPageRoute(builder: (context) => )//TODO: add raid_screen.dart and call RaidScreen here
+                    );*/
                   },
                 );
               }).toList(),

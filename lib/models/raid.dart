@@ -3,8 +3,9 @@ class Raid {
   String groupId;
   String location;
   String boss;
+  int memberCount;
 
-  Raid({this.id, this.groupId, this.location, this.boss});
+  Raid({this.id, this.groupId, this.location, this.boss, this.memberCount});
 
   factory Raid.fromMap(Map<String, dynamic> raid){
     return Raid(
@@ -12,6 +13,7 @@ class Raid {
       groupId: raid['groupId'],
       boss: raid['boss'],
       location: raid['location'],
+      memberCount: raid['memberCount'],
     );
   }
 
@@ -21,6 +23,7 @@ class Raid {
     map.putIfAbsent('groupId', () => groupId);
     map.putIfAbsent('boss', () => boss);
     map.putIfAbsent('location', () => location);
+    map.putIfAbsent('memberCount', () => memberCount);
     return map;
   }
 }
