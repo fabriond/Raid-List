@@ -59,10 +59,8 @@ class GroupsScreen extends StatelessWidget {
               ListTile(
                 title: Text('Logout'),
                 onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => ConfirmDialog('Logout?', () => User.logout(context))
-                  );
+                  //maybe add timer (create a mutable title that can show a timer) onTap and logout onLongPress
+                  User.logout(context);
                 },
               )
             ],
