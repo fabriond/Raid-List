@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:raid_list/models/user.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:raid_list/widgets/form/buttons.dart';
 import 'package:raid_list/widgets/form/fields.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,6 +12,20 @@ class LoginForm extends StatefulWidget {
   final User loginInfo = User();
   final usernameFocus = FocusNode();
   final passwordFocus = FocusNode();
+  final recognizer = TapGestureRecognizer();
+  
+  void launchLogoURL() async {
+    const url = 'http://www.freepik.com';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+  
+  LoginForm(){
+    recognizer.onTap = launchLogoURL;
+  }
 
   @override
   State<StatefulWidget> createState() => LoginFormState();
@@ -53,7 +69,13 @@ class LoginFormState extends State<LoginForm>{
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Image.asset('assets/logo.png', height: 155, width: 143.7),
-          Text('Logo by Freepik'),
+          RichText(
+            text: TextSpan(
+              text: 'Logo by Freepik', 
+              style: TextStyle(color: Theme.of(context).hintColor),
+              recognizer: widget.recognizer
+            )
+          ),
           SizedBox(height: 16.0),
           DefaultField('username', (value) => widget.loginInfo.username = value, widget.usernameFocus, nextFocus: widget.passwordFocus),
           SizedBox(height: 8.0),
