@@ -43,6 +43,7 @@ class GroupForm extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              SizedBox(height: 2.0),
               DefaultField('name', (value) => group.name = value, nameFocus, initValue: group.name, nextFocus: descFocus),
               SizedBox(height: 8.0),
               DefaultField('description', (value) => group.description = value, descFocus, initValue: group.description),

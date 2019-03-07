@@ -42,10 +42,12 @@ class DefaultField extends StatelessWidget {
           FocusScope.of(context).requestFocus(nextFocus);
         }
       },
+      style: TextStyle(fontSize: 18),
       decoration: InputDecoration(
         fillColor: Theme.of(context).dialogBackgroundColor,
         filled: true,
         labelText: ReCase(fieldName).titleCase,
+        labelStyle: TextStyle(fontSize: 18),
         contentPadding: EdgeInsets.fromLTRB(10.0, 14.0, 10.0, 14.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(3/*2.0*/)),
       ),
@@ -111,11 +113,13 @@ class PasswordFieldState extends State<PasswordField> {
           FocusScope.of(context).requestFocus(widget.nextFocus);
         }
       },
+      style: TextStyle(fontSize: 18),
       obscureText: !visibility,
       decoration: InputDecoration(
         fillColor: Theme.of(context).dialogBackgroundColor,
         filled: true,
         labelText: 'Password',
+        labelStyle: TextStyle(fontSize: 18),
         contentPadding: EdgeInsets.fromLTRB(10.0, 14.0, 10.0, 14.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(3/*2.0*/)),
         suffixIcon: IconButton(
@@ -176,13 +180,12 @@ class BossDropdownState extends State<RaidBossDropdown> {
       future: getBosses(),
       builder: (context, snapshot) {
         final bosses = availableBosses(snapshot.data).map((boss) {
-          return DropdownMenuItem(value: boss, child: Text(boss));
+          return DropdownMenuItem(value: boss, child: Text(boss, style: TextStyle(fontSize: 18)));
         }).toList();
 
         return DropdownButtonFormField<String>(
           value: currentValue,
           items: bosses,
-          hint: Text(ReCase('boss').titleCase),
           onChanged: (value) {
             setState(() {
               if(!initData().contains(value)) selected = true;
@@ -202,6 +205,8 @@ class BossDropdownState extends State<RaidBossDropdown> {
             filled: true,
             contentPadding: EdgeInsets.fromLTRB(10.0, 12.0, 10.0, 12.0),
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(3/*2.0*/)),
+            labelText: ReCase('boss').titleCase,
+            labelStyle: TextStyle(fontSize: 18)
           ),
         );
       }
