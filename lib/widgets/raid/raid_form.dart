@@ -45,7 +45,7 @@ class RaidForm extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              SizedBox(height: 2.0),
+              SizedBox(height: 3.0),
               DefaultField('location', (value) => raid.location = value, locationFocus, initValue: raid.location),
               SizedBox(height: 8.0),
               RaidBossDropdown((value) => raid.boss = value, initValue: raid.boss),

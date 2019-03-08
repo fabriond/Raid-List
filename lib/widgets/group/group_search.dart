@@ -38,7 +38,12 @@ class GroupSearch extends StatelessWidget {
         title: Text("Join Group"),
         content: SingleChildScrollView(
           child: Center(
-            child: DefaultField('group key', (value) => group.id = value, idFocus, initValue: ''),
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: 3.0), 
+                DefaultField('group key', (value) => group.id = value, idFocus, initValue: '')
+              ]
+            )
           )
         ),
         actions: <Widget>[

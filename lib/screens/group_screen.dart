@@ -26,7 +26,7 @@ class GroupScreen extends StatelessWidget{
           child: ListView(
             children: <Widget>[
               ListTile(
-                title: Center(child: Text(group.name, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),)),
+                title: Center(child: Text(group.name, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
                 subtitle: Column(
                   children: <Widget>[
                     Center(child: Text(group.description)),
