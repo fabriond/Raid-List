@@ -11,7 +11,9 @@ import 'package:raid_list/widgets/loading_icon.dart';
 class MemberList extends StatelessWidget {
 
   final User user;
-  final Group group; //This can either be a group or raid
+
+  //This class either has a group or a raid, but never both
+  final Group group;
   final Raid raid;
 
   MemberList(this.user, {this.group, this.raid});
@@ -19,6 +21,7 @@ class MemberList extends StatelessWidget {
   CollectionReference getRef(){
     if(group != null) return GroupController.membersRef(group.id);
     else if(raid != null) return RaidController.membersRef(raid);
+    else return null;
   }
 
   Icon getIcon(bool isReady){

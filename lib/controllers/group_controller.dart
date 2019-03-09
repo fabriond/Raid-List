@@ -1,7 +1,6 @@
 import 'package:raid_list/models/user.dart';
 import 'package:raid_list/models/group.dart';
 import 'package:raid_list/controllers/user_controller.dart';
-import 'package:raid_list/controllers/raid_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:raid_list/controllers/member_controller.dart';
 
