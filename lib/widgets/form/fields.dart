@@ -1,6 +1,8 @@
 import 'package:http/http.dart' show Client;
 import 'package:flutter/material.dart';
 import 'package:recase/recase.dart';
+import 'package:intl/intl.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 class DefaultField extends StatelessWidget {
   
@@ -132,6 +134,52 @@ class PasswordFieldState extends State<PasswordField> {
 
 }
 
+class TimeField extends StatelessWidget{
+
+  final String fieldName;
+  final Function onSaveCallback;
+  final DateTime initValue;
+  final bool autoFocus;
+  final FocusNode currentFocus;
+  final FocusNode nextFocus;
+
+  TimeField(this.fieldName, this.onSaveCallback, this.currentFocus, {this.initValue, this.autoFocus = false, this.nextFocus});
+
+  @override
+  Widget build(BuildContext context) {
+    return DateTimePickerFormField(
+      dateOnly: false,
+      format: DateFormat.yMMMd().addPattern("'at'").add_jm(),
+      onSaved: (value) => onSaveCallback(value),
+      keyboardType: TextInputType.text,
+      autofocus: autoFocus,
+      editable: false,
+      initialValue: initValue,
+      validator: (value){
+        if(value == null){
+          return 'Please enter a ' + fieldName;
+        }
+      },
+      focusNode: currentFocus,
+      onFieldSubmitted: (DateTime term){
+        if(nextFocus != null){
+          currentFocus.unfocus();
+          FocusScope.of(context).requestFocus(nextFocus);
+        }
+      },
+      style: TextStyle(fontSize: 18),
+      decoration: InputDecoration(
+        fillColor: Theme.of(context).dialogBackgroundColor,
+        filled: true,
+        labelText: ReCase(fieldName).titleCase,
+        labelStyle: TextStyle(fontSize: 18),
+        contentPadding: EdgeInsets.fromLTRB(10.0, 14.0, 10.0, 14.0),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(3/*2.0*/)),
+      ),
+    );
+  }
+}
+
 class RaidBossDropdown extends StatefulWidget{
 
   final Client client = Client();
@@ -141,15 +189,15 @@ class RaidBossDropdown extends StatefulWidget{
   RaidBossDropdown(this.onSaveCallback, {this.initValue});
 
   @override
-  State<StatefulWidget> createState() => BossDropdownState(currentValue: initValue);
+  State<StatefulWidget> createState() => _BossDropdownState(currentValue: initValue);
 
 }
-class BossDropdownState extends State<RaidBossDropdown> {
+class _BossDropdownState extends State<RaidBossDropdown> {
 
   String currentValue;
   bool selected = false;
 
-  BossDropdownState({this.currentValue});
+  _BossDropdownState({this.currentValue});
 
   Future<List<String>> getBosses() async {
     final resp = await widget.client.get('https://thesilphroad.com/raid-bosses');

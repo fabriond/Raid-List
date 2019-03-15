@@ -16,6 +16,7 @@ class RaidForm extends StatelessWidget {
   final Group group;
   final User user;
   final locationFocus = FocusNode();
+  final timeFocus = FocusNode();
 
   RaidForm(this.user, this.group, {this.raid}){
     raid.groupId = group.id;
@@ -47,6 +48,8 @@ class RaidForm extends StatelessWidget {
             children: <Widget>[
               SizedBox(height: 3.0),
               DefaultField('location', (value) => raid.location = value, locationFocus, initValue: raid.location),
+              SizedBox(height: 8.0),
+              TimeField('time', (value) => raid.time = value, timeFocus, initValue: raid.time),
               SizedBox(height: 8.0),
               RaidBossDropdown((value) => raid.boss = value, initValue: raid.boss),
             ],
